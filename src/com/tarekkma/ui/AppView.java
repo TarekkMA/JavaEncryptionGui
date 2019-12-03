@@ -104,8 +104,8 @@ public class AppView extends JFrame {
         mainPanel.add(new JLabel("Encrypted Text:"), "wrap");
         mainPanel.add(new JScrollPane(decTxt), "pushy,hmin 100,grow 1");
         mainPanel.add(new JScrollPane(encTxt), "pushy,hmin 100,grow 1, wrap");
-        mainPanel.add(encBtn, "grow 1");
-        mainPanel.add(decBtn, "grow 1, wrap");
+        mainPanel.add(encBtn, "grow 50");
+        mainPanel.add(decBtn, "grow 50, wrap");
         mainPanel.add(tl1, "align center,span 2,wrap");
         mainPanel.add(tl2, "align center,span 2,wrap");
 
