@@ -1,29 +1,21 @@
-package com.tarekkma;
+package com.tarekkma.ui;
+
+import com.tarekkma.EncryptionAlgorithm;
+import com.tarekkma.Utils;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import static com.tarekkma.Utils.*;
 import java.util.List;
-import java.util.Vector;
-import java.util.concurrent.Callable;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-public class Application extends JFrame {
+public class AppView extends JFrame {
 
     private final List<EncryptionAlgorithm> algorithmList;
     private EncryptionAlgorithm selectedAlgorithm;
 
-    Application(List<EncryptionAlgorithm> algorithmList) {
+    public AppView(List<EncryptionAlgorithm> algorithmList) {
         this.algorithmList = algorithmList;
         selectedAlgorithm = algorithmList.get(0);
         setUpUI();
@@ -100,56 +92,56 @@ public class Application extends JFrame {
         decTxt.setLineWrap(true);
 
 
-        addComp(mainPanel,
+        addComponentToGBL(mainPanel,
                 comboboxLayout,
                 0, 0,
                 100, 0,
                 2, 1,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL);
-        addComp(mainPanel,
+        addComponentToGBL(mainPanel,
                 infoPanel,
                 0, 1,
                 0, 0,
                 2, 1,
                 GridBagConstraints.WEST, GridBagConstraints.BOTH);
-        addComp(mainPanel,
+        addComponentToGBL(mainPanel,
                 keyPanel,
                 0, 2,
                 100, 0,
                 2, 1,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL);
-        addComp(mainPanel,
+        addComponentToGBL(mainPanel,
                 new JLabel("Decrypted Text:"),
                 0, 3,
                 0, 0,
                 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.NONE);
-        addComp(mainPanel,
+        addComponentToGBL(mainPanel,
                 new JScrollPane(decTxt),
                 0, 4,
                 100, 100,
                 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.BOTH);
-        addComp(mainPanel,
+        addComponentToGBL(mainPanel,
                 new JLabel("Encrypted Text:"),
                 1, 3,
                 0, 0,
                 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.NONE);
-        addComp(mainPanel,
+        addComponentToGBL(mainPanel,
                 new JScrollPane(encTxt),
                 1, 4,
                 100, 100,
                 1, 1,
                 GridBagConstraints.WEST, GridBagConstraints.BOTH);
 
-        addComp(mainPanel,
+        addComponentToGBL(mainPanel,
                 encBtn,
                 0, 5,
                 100, 0,
                 1, 1,
                 GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL);
-        addComp(mainPanel,
+        addComponentToGBL(mainPanel,
                 decBtn,
                 1, 5,
                 100, 0,
@@ -157,7 +149,7 @@ public class Application extends JFrame {
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL);
         JLabel tl1 = new JLabel("Created By Tarek Mohamed Abdalla");
         tl1.setHorizontalAlignment(JLabel.CENTER);
-        addComp(mainPanel,
+        addComponentToGBL(mainPanel,
                 tl1,
                 0, 6,
                 100, 0,
@@ -165,7 +157,7 @@ public class Application extends JFrame {
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         JLabel tl2 = new JLabel("GitHub.com/TarekkMA");
         tl2.setHorizontalAlignment(JLabel.CENTER);
-        addComp(mainPanel,
+        addComponentToGBL(mainPanel,
                 tl2,
                 0, 7,
                 100, 0,
@@ -192,9 +184,9 @@ public class Application extends JFrame {
             keyTxt.setText(selectedAlgorithm.generateKey());
             enc(encTxt, decTxt, keyTxt);
         });
-        addATextWatcher(keyTxt, s -> enc(encTxt, decTxt, keyTxt));
-        addATextWatcher(decTxt, s -> enc(encTxt, decTxt, keyTxt));
-        addATextWatcher(encTxt, s -> dec(encTxt, decTxt, keyTxt));
+        Utils.addATextWatcher(keyTxt, s -> enc(encTxt, decTxt, keyTxt));
+        Utils.addATextWatcher(decTxt, s -> enc(encTxt, decTxt, keyTxt));
+        Utils.addATextWatcher(encTxt, s -> dec(encTxt, decTxt, keyTxt));
         encBtn.addActionListener(e -> enc(encTxt, decTxt, keyTxt));
         decBtn.addActionListener(e -> dec(encTxt, decTxt, keyTxt));
 
@@ -238,49 +230,4 @@ public class Application extends JFrame {
         return !selectedAlgorithm.requireKey() || selectedAlgorithm.isValidKey(key);
     }
 
-    private void addComp(JPanel thePanel, JComponent comp, int xPos, int yPos, int xWeight, int yWeight, int compWidth, int compHeight, int place, int stretch) {
-
-        GridBagConstraints gridConstraints = new GridBagConstraints();
-
-        gridConstraints.gridx = xPos;
-        gridConstraints.gridy = yPos;
-        gridConstraints.gridwidth = compWidth;
-        gridConstraints.gridheight = compHeight;
-        gridConstraints.weightx = xWeight;
-        gridConstraints.weighty = yWeight;
-        gridConstraints.insets = new Insets(5, 5, 5, 5);
-        gridConstraints.anchor = place;
-        gridConstraints.fill = stretch;
-
-        thePanel.add(comp, gridConstraints);
-
-    }
-
-    public void addATextWatcher(JTextComponent jTextComponent, Consumer<String> onTextChanged) {
-        jTextComponent.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                changed();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                changed();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                changed();
-            }
-
-            private void changed() {
-                if (jTextComponent.isFocusOwner())
-                    onTextChanged.accept(jTextComponent.getText());
-            }
-        });
-    }
-
-    String toMultiLineHtml(String in) {
-        return "<html>" + in.replaceAll("\n", "<br>") + "</html>";
-    }
 }

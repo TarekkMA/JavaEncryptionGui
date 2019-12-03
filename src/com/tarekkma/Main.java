@@ -1,14 +1,15 @@
 package com.tarekkma;
 
 import com.tarekkma.encryptions.*;
+import com.tarekkma.ui.AppView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-        Application application = new Application(List.of(
+
+        List<EncryptionAlgorithm> algorithms = List.of(
                 new AES(),
                 new DES(),
                 new IDEA(),
@@ -18,6 +19,9 @@ public class Main {
                 new Atbash(),
                 new ROT13(),
                 new XOR()
-        ));
+        );
+
+        AppView view = new AppView(algorithms);
+        view.setVisible(true);
     }
 }
