@@ -213,6 +213,7 @@ public class Application extends JFrame {
             try {
                 encTxt.setText(selectedAlgorithm.encrypt(plain, key));
             } catch (Exception e) {
+                e.printStackTrace();
                 encTxt.setText("=== ERROR ===\n" + e.toString() + "\n===\n");
             }
         }
@@ -227,6 +228,7 @@ public class Application extends JFrame {
             try {
                 decTxt.setText(selectedAlgorithm.decrypt(plain, key));
             } catch (Exception e) {
+                e.printStackTrace();
                 decTxt.setText("=== ERROR ===\n" + e.toString() + "\n===\n");
             }
         }

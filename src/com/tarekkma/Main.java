@@ -9,6 +9,9 @@ public class Main {
 
     public static void main(String[] args) {
         Application application = new Application(List.of(
+                new AES(),
+                new DES(),
+                new IDEA(),
                 new Base64(),
                 new Caesar(),
                 new Atbash(),
