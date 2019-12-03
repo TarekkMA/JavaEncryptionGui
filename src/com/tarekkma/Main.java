@@ -12,6 +12,7 @@ public class Main {
                 new AES(),
                 new DES(),
                 new IDEA(),
+                new Blowfish(),
                 new Base64(),
                 new Caesar(),
                 new Atbash(),

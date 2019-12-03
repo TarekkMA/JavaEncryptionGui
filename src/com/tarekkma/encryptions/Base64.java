@@ -31,7 +31,7 @@ public class Base64 implements EncryptionAlgorithm {
 
     @Override
     public String name() {
-        return "Base64 Decoding";
+        return "Base64";
     }
 
     @Override
