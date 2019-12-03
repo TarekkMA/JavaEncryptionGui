@@ -2,12 +2,14 @@ package com.tarekkma.encryptions;
 
 import com.tarekkma.EncryptionAlgorithm;
 
+import java.util.Random;
+
 public class XOR implements EncryptionAlgorithm {
     @Override
     public String encrypt(String plaintext, String key) throws Exception {
         // Define XOR key
         // Any character value will work
-        char xorKey = 'P';
+        char xorKey = key.charAt(0);
 
         // Define String to store encrypted/decrypted String
         StringBuilder outputString = new StringBuilder();
@@ -17,8 +19,7 @@ public class XOR implements EncryptionAlgorithm {
 
         // perform XOR operation of key
         // with every caracter in string
-        for (int i = 0; i < len; i++)
-        {
+        for (int i = 0; i < len; i++) {
             outputString.append(Character.toString((char) (plaintext.charAt(i) ^ xorKey)));
         }
 
@@ -29,17 +30,22 @@ public class XOR implements EncryptionAlgorithm {
     @Override
     public String decrypt(String encrypted, String key) throws Exception {
         //enc is same as dec
-        return encrypt(encrypted,key);
+        return encrypt(encrypted, key);
     }
 
     @Override
     public boolean requireKey() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isValidKey(String key) {
-        return false;
+        return key.length() == 1;
+    }
+
+    @Override
+    public String generateKey() {
+        return String.valueOf((char)(new Random().nextInt(26) + 'a'));
     }
 
     @Override

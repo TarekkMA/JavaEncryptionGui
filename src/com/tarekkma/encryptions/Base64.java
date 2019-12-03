@@ -25,6 +25,11 @@ public class Base64 implements EncryptionAlgorithm {
     }
 
     @Override
+    public String generateKey() {
+        return null;
+    }
+
+    @Override
     public String name() {
         return "Base64 Decoding";
     }

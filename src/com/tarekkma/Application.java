@@ -77,6 +77,8 @@ public class Application extends JFrame {
         keyPanel.setBorder(BorderFactory.createTitledBorder("Key:"));
         Box keyLayout = Box.createHorizontalBox();
         keyLayout.add(keyTxt);
+        JButton genKeyBtn = new JButton("Random Key");
+        keyLayout.add(genKeyBtn);
 
 
         String KEY = "KEY";
@@ -186,6 +188,10 @@ public class Application extends JFrame {
             }
         });
 
+        genKeyBtn.addActionListener(e -> {
+            keyTxt.setText(selectedAlgorithm.generateKey());
+            enc(encTxt, decTxt, keyTxt);
+        });
         addATextWatcher(keyTxt, s -> enc(encTxt, decTxt, keyTxt));
         addATextWatcher(decTxt, s -> enc(encTxt, decTxt, keyTxt));
         addATextWatcher(encTxt, s -> dec(encTxt, decTxt, keyTxt));

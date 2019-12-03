@@ -8,6 +8,7 @@ public interface EncryptionAlgorithm {
     String decrypt(String encrypted,String key) throws Exception;
     boolean requireKey();
     boolean isValidKey(String key);
+    String generateKey();
 
     String name();
     String description();

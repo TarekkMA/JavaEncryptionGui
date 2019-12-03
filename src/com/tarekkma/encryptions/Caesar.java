@@ -2,6 +2,8 @@ package com.tarekkma.encryptions;
 
 import com.tarekkma.EncryptionAlgorithm;
 
+import java.util.Random;
+
 public class Caesar implements EncryptionAlgorithm {
 
 
@@ -10,7 +12,7 @@ public class Caesar implements EncryptionAlgorithm {
         int shiftValue = Integer.parseInt(key);
         StringBuilder encryptedMessage = new StringBuilder();
         for (char c : plaintext.toCharArray()) {
-            encryptedMessage.append((char)(c + shiftValue));
+            encryptedMessage.append((char) (c + shiftValue));
         }
         return encryptedMessage.toString();
     }
@@ -20,7 +22,7 @@ public class Caesar implements EncryptionAlgorithm {
         int shiftValue = Integer.parseInt(key);
         StringBuilder decryptedMessage = new StringBuilder();
         for (char c : encrypted.toCharArray()) {
-            decryptedMessage.append((char)(c - shiftValue));
+            decryptedMessage.append((char) (c - shiftValue));
         }
         return decryptedMessage.toString();
     }
@@ -50,5 +52,10 @@ public class Caesar implements EncryptionAlgorithm {
         return "The Caesar cipher is one of the earliest known and simplest ciphers. It is a type of substitution cipher in which each letter in the plaintext is 'shifted' a certain number of places down the alphabet. For example, with a shift of 1, A would be replaced by B, B would become C, and so on. The method is named after Julius Caesar, who apparently used it to communicate with his generals.\n" +
                 "\n" +
                 "More complex encryption schemes such as the Vigenère cipher employ the Caesar cipher as one element of the encryption process. The widely known ROT13 'encryption' is simply a Caesar cipher with an offset of 13. The Caesar cipher offers essentially no communication security, and it will be shown that it can be easily broken even by hand.";
+    }
+
+    @Override
+    public String generateKey() {
+        return String.valueOf(new Random().nextInt(10000));
     }
 }
