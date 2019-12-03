@@ -2,12 +2,13 @@ package com.tarekkma.ui;
 
 import com.tarekkma.EncryptionAlgorithm;
 import com.tarekkma.Utils;
+import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import static com.tarekkma.Utils.*;
+
 import java.util.List;
 
 public class AppView extends JFrame {
@@ -31,9 +32,8 @@ public class AppView extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Encryption Algorithms | Tarek Mohamed Abdalla | Section 2");
 
-        JPanel mainPanel = new JPanel();
-        //mainPanel.setBackground(Color.yellow);
-        mainPanel.setLayout(new GridBagLayout());
+        JPanel mainPanel = new JPanel(new MigLayout("", "[grow][grow]", "[]"));
+       // mainPanel.setBackground(Color.lightGray);
 
         JTextArea encTxt = new JTextArea();
         JTextArea decTxt = new JTextArea();
@@ -50,7 +50,7 @@ public class AppView extends JFrame {
 
 
         JPanel infoPanel = new JPanel(new BorderLayout());
-        infoPanel.setSize(1000,100);
+        infoPanel.setSize(1000, 100);
         infoPanel.setBackground(mainPanel.getBackground());
         Border border = BorderFactory.createTitledBorder("Description:");
         infoPanel.setBorder(border);
@@ -91,78 +91,24 @@ public class AppView extends JFrame {
         encTxt.setLineWrap(true);
         decTxt.setLineWrap(true);
 
-
-        addComponentToGBL(mainPanel,
-                comboboxLayout,
-                0, 0,
-                100, 0,
-                2, 1,
-                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL);
-        addComponentToGBL(mainPanel,
-                infoPanel,
-                0, 1,
-                0, 0,
-                2, 1,
-                GridBagConstraints.WEST, GridBagConstraints.BOTH);
-        addComponentToGBL(mainPanel,
-                keyPanel,
-                0, 2,
-                100, 0,
-                2, 1,
-                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL);
-        addComponentToGBL(mainPanel,
-                new JLabel("Decrypted Text:"),
-                0, 3,
-                0, 0,
-                1, 1,
-                GridBagConstraints.WEST, GridBagConstraints.NONE);
-        addComponentToGBL(mainPanel,
-                new JScrollPane(decTxt),
-                0, 4,
-                100, 100,
-                1, 1,
-                GridBagConstraints.WEST, GridBagConstraints.BOTH);
-        addComponentToGBL(mainPanel,
-                new JLabel("Encrypted Text:"),
-                1, 3,
-                0, 0,
-                1, 1,
-                GridBagConstraints.WEST, GridBagConstraints.NONE);
-        addComponentToGBL(mainPanel,
-                new JScrollPane(encTxt),
-                1, 4,
-                100, 100,
-                1, 1,
-                GridBagConstraints.WEST, GridBagConstraints.BOTH);
-
-        addComponentToGBL(mainPanel,
-                encBtn,
-                0, 5,
-                100, 0,
-                1, 1,
-                GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL);
-        addComponentToGBL(mainPanel,
-                decBtn,
-                1, 5,
-                100, 0,
-                1, 1,
-                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL);
         JLabel tl1 = new JLabel("Created By Tarek Mohamed Abdalla");
         tl1.setHorizontalAlignment(JLabel.CENTER);
-        addComponentToGBL(mainPanel,
-                tl1,
-                0, 6,
-                100, 0,
-                2, 1,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH);
         JLabel tl2 = new JLabel("GitHub.com/TarekkMA");
         tl2.setHorizontalAlignment(JLabel.CENTER);
-        addComponentToGBL(mainPanel,
-                tl2,
-                0, 7,
-                100, 0,
-                2, 1,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH);
+
+
+        mainPanel.add(comboboxLayout, "span 2, center, growx, wrap");
+        mainPanel.add(infoPanel, "span 2, center, growx, wrap");
+        mainPanel.add(keyPanel, "span 2, center, growx, wrap");
+        mainPanel.add(new JLabel("Decrypted Text:"));
+        mainPanel.add(new JLabel("Encrypted Text:"), "wrap");
+        mainPanel.add(new JScrollPane(decTxt), "pushy,hmin 100,grow 1");
+        mainPanel.add(new JScrollPane(encTxt), "pushy,hmin 100,grow 1, wrap");
+        mainPanel.add(encBtn, "grow 1");
+        mainPanel.add(decBtn, "grow 1, wrap");
+        mainPanel.add(tl1, "align center,span 2,wrap");
+        mainPanel.add(tl2, "align center,span 2,wrap");
+
 
 
         algorithmJComboBox.addItemListener(event -> {
@@ -199,7 +145,7 @@ public class AppView extends JFrame {
     private void enc(JTextComponent encTxt, JTextComponent decTxt, JTextComponent keyTxt) {
         String plain = decTxt.getText();
         String key = keyTxt.getText();
-        if (!checkKey(key)) {
+        if (invalidKey(key)) {
             encTxt.setText("=== ERROR ===\nInvalid Key\n===\n");
         } else {
             try {
@@ -214,7 +160,7 @@ public class AppView extends JFrame {
     private void dec(JTextComponent encTxt, JTextComponent decTxt, JTextComponent keyTxt) {
         String plain = encTxt.getText();
         String key = keyTxt.getText();
-        if (!checkKey(key)) {
+        if (invalidKey(key)) {
             decTxt.setText("=== ERROR ===\nInvalid Key\n===\n");
         } else {
             try {
@@ -226,8 +172,8 @@ public class AppView extends JFrame {
         }
     }
 
-    private boolean checkKey(String key) {
-        return !selectedAlgorithm.requireKey() || selectedAlgorithm.isValidKey(key);
+    private boolean invalidKey(String key) {
+        return selectedAlgorithm.requireKey() && !selectedAlgorithm.isValidKey(key);
     }
 
 }
