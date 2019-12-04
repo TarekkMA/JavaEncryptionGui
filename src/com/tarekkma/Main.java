@@ -10,6 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
         List<EncryptionAlgorithm> algorithms = List.of(
+                new Playfair(),
                 new AES(),
                 new DES(),
                 new IDEA(),
